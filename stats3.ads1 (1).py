@@ -16,16 +16,20 @@ def read_data(fn):
     This function read data 
     """
     df = pd.read_csv(fn)
-    return df;
+    return df
 
-    
+def get_transpose(str):
+    """This Function returns transpose of dataframe given
+    """
+    df=str.transpose()
+    return df
+
 def bargraph():
     """
     This function plots cereal yield of different countries
     in the year 2010,2012 and 2014
     """
     cereal_df = read_data("C:\\ads 2\\CY.csv")
-    cereal_df_Transpose = cereal_df.transpose()
     plt.figure(figsize=(10, 4))
     val = cereal_df[['Country Name', '2010', '2012', '2014']]
     t = val.iloc[0:5]
@@ -81,7 +85,65 @@ def bargraph1():
     print("Mode of Cereal yield:\n",_mode)
 
 
+def lineplot_1(): 
+    """
+    This function plots CO2 emissions from solid fuel consumption
+    of eight different countries in the given year 2010,2012 and 2014
+    """
+    solid = read_data("co2 s.csv")
+    plt.figure()
+    year=["2010","2012","2014"]
+    for i in range(len(year)):
+        plt.plot(solid['Country Name'],solid[year[i]],label = year[i])
+    plt.title("CO2 emissions from solid fuel consumption (kt)",fontsize=15)
+    plt.xlabel("Country Name",fontsize=15)
+    plt.ylabel("CO2 Emissions(solid fuel)",fontsize=15)
+    plt.legend(fontsize=15)
+    plt.xticks(rotation=90,horizontalalignment='center',fontsize=15)
+    plt.yticks(fontsize=15)
+    plt.savefig("solid_fuel_consumption.png", bbox_inches = "tight")
+    plt.show()
 
+    
+   
+def lineplot_2(): 
+    """
+    This function plots CO2 emissions from liquid fuel consumption
+    of eight different countries in the given year 2010,2012 and 2014
+    """
+    
+    liquid = read_data("co2 l.csv")
+    plt.figure()
+    year=["2010","2012","2014"]
+    for i in range(len(year)):
+        plt.plot(liquid['Country Name'],liquid[year[i]],label = year[i])
+    plt.title("CO2 emissions from liquid fuel consumption (kt)",fontsize=15)
+    plt.xlabel("Country Name",fontsize=15)
+    plt.ylabel("CO2 Emissions(liquid fuel)",fontsize=15)
+    plt.legend(fontsize=15)
+    plt.xticks(rotation=90,horizontalalignment="center",fontsize=15)
+    plt.yticks(fontsize=15)
+    plt.savefig("liquid_fuel_consumption.png", bbox_inches = "tight")
+    plt.show()
+
+
+def heatmap():
+    """
+    This function visualize correlation between different indicators
+    """
+    df = pd.read_csv("swi.csv")
+    df_drop = df.drop("Country Name",axis=1)
+    df_set_ind = df_drop.set_index("Indicator")
+    df_set_ind.index.name = None
+    df_trans = get_transpose(df_set_ind)
+    cor=df_trans.corr()
+    sns.heatmap(data=cor,annot=True)
+    plt.title("Switzerland",fontsize=15)
+    plt.xticks(rotation=90,horizontalalignment="center",fontsize=15)
+    plt.yticks(fontsize=15)
+    plt.savefig("Heatmap.png", bbox_inches = "tight")
+    plt.show()
+    
     
     
 if __name__=="__main__":    
@@ -91,4 +153,13 @@ if __name__=="__main__":
     
     #calling function to visualise bar plot
     bargraph1()
+    
+    #calling function to visualise line plot
+    lineplot_1()
+    
+    #calling function to visualise line plot
+    lineplot_2()
+    
+    #calling function to visualise heatmap
+    heatmap()
    
