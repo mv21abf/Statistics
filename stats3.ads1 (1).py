@@ -13,7 +13,7 @@ import seaborn as sns
 
 def read_data(fn):
     """ 
-    This function read data 
+    This function reads csv file data 
     """
     df = pd.read_csv(fn)
     return df
